@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Security;
@@ -21,6 +22,7 @@ namespace TexConvGUI
     public partial class MainWindow : Window
     {
         private const string TEXCONV_PATH = "texconv.exe";
+        private bool _processing = false;
 
         public MainWindow()
         {
@@ -60,6 +62,36 @@ namespace TexConvGUI
             return $" -nologo -ft png -o {InputDestination.Text} {path}";
         }
 
+        private void StartProcessing()
+        {
+            _processing = true;
+
+            ListSelection.IsEnabled = false;
+            BtnClear.IsEnabled = false;
+            BtnSource.IsEnabled = false;
+            BtnSourceClear.IsEnabled = false;
+            BtnDestination.IsEnabled = false;
+            BtnConvert.IsEnabled = false;
+            ComboDdsFormat.IsEnabled = false;
+            ComboMipmaps.IsEnabled = false;
+            CheckPow2.IsEnabled = false;
+        }
+
+        private void FinishProcessing()
+        {
+            _processing = false;
+
+            ListSelection.IsEnabled = true;
+            BtnClear.IsEnabled = true;
+            BtnSource.IsEnabled = true;
+            BtnSourceClear.IsEnabled = true;
+            BtnDestination.IsEnabled = true;
+            BtnConvert.IsEnabled = true;
+            ComboDdsFormat.IsEnabled = true;
+            ComboMipmaps.IsEnabled = true;
+            CheckPow2.IsEnabled = true;
+        }
+
         #endregion
 
         #region Bindings
@@ -96,7 +128,7 @@ namespace TexConvGUI
 
         private void BtnSourceClear_Click(object sender, RoutedEventArgs e)
         {
-            ComboDdsFormat.Items.Clear();
+            ListSelection.Items.Clear();
         }
 
         private void BtnDestination_Click(object sender, RoutedEventArgs e)
@@ -149,7 +181,8 @@ namespace TexConvGUI
 
         private void BtnConvert_Click(object sender, RoutedEventArgs e)
         {
-            if (ListSelection.Items.Count == 0)
+
+            if (_processing || ListSelection.Items.Count == 0)
                 return;
 
             if (!File.Exists(TEXCONV_PATH))
@@ -157,19 +190,28 @@ namespace TexConvGUI
                 MessageBox.Show("texconv.exe not found! Place texconv.exe into the same directory as this program.", "Error");
                 return;
             }
+            
+            StartProcessing();
+            var totalFiles = ListSelection.Items.Count;
+            var convertedCount = 0;
 
             for (var i = 0; i < ListSelection.Items.Count; i++)
             {
+
                 var item = ListSelection.Items[i] as string;
                 if (item == null)
                     continue;
 
-                var proc = new Process();
-
-                proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.RedirectStandardOutput = true;
-                proc.StartInfo.FileName = TEXCONV_PATH;
-
+                var proc = new Process
+                {
+                    StartInfo =
+                    {
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        FileName = TEXCONV_PATH
+                    }
+                };
+                
                 var ext = Path.GetExtension(item).ToLowerInvariant();
                 proc.StartInfo.Arguments = ext == ".dds" ? GetConvertToPngArgs(item) : GetConvertToDdsArgs(item);
 
@@ -178,7 +220,10 @@ namespace TexConvGUI
                 proc.WaitForExit();
 
                 if (proc.ExitCode == 0)
+                {
+                    convertedCount++;
                     continue;
+                }
 
                 var sb = new StringBuilder();
                 sb.AppendLine($"Failed to convert {item}!");
@@ -187,6 +232,9 @@ namespace TexConvGUI
 
                 MessageBox.Show(sb.ToString(), "Error");
             }
+
+            FinishProcessing();
+            MessageBox.Show($"{convertedCount} of {totalFiles} files were converted successfully.", "Finished");
         }
 
         #endregion
