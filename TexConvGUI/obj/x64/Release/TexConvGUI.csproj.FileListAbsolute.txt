@@ -1,0 +1,16 @@
+D:\Code\TexConvGUI\TexConvGUI\bin\x64\Release\texconv.exe
+D:\Code\TexConvGUI\TexConvGUI\bin\x64\Release\TexConvGUI.exe.config
+D:\Code\TexConvGUI\TexConvGUI\bin\x64\Release\TexConvGUI.exe
+D:\Code\TexConvGUI\TexConvGUI\bin\x64\Release\TexConvGUI.pdb
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\MainWindow.g.cs
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\App.g.cs
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI_Content.g.cs
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI_MarkupCompile.cache
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI_MarkupCompile.lref
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\MainWindow.baml
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.g.resources
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.Properties.Resources.resources
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.csproj.GenerateResource.Cache
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.csproj.CoreCompileInputs.cache
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.exe
+D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.pdb
