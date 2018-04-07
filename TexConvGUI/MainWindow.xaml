@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TexConvGUI"
         mc:Ignorable="d"
-        Title="Texconv DDS &lt;-&gt; PNG" Height="425.111" Width="665" Loaded="MainWindow_OnLoaded">
+        Title="Texconv DDS &lt;-&gt; PNG" Height="425.111" Width="665" Loaded="MainWindow_OnLoaded" Padding="5" ScrollViewer.CanContentScroll="True">
     <Grid Margin="5,5,5,5">
         <Button x:Name="BtnSource" Content="Select File(s)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="153" Height="24" Click="BtnSource_Click" />
         <Button x:Name="BtnDestination" Content="Destination Directory" HorizontalAlignment="Left" Margin="326,10,0,0" VerticalAlignment="Top" Width="153" Height="24" Click="BtnDestination_Click"/>
