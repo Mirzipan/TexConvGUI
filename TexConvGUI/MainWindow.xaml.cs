@@ -1,9 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Security;
-using System.Security.Permissions;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -31,101 +28,11 @@ namespace TexConvGUI
             InitializeComponent();
         }
 
-        #region Helpers
-
-        private void AddFiles(string[] filenames)
-        {
-            if (filenames == null || filenames.Length == 0)
-                return;
-
-            foreach (var item in filenames)
-            {
-                if (!ListSelection.Items.Contains(item))
-                    ListSelection.Items.Add(item);
-            }
-        }
-
-        private static bool HasWriteAccess(string directory)
-        {
-            var permission = new FileIOPermission(FileIOPermissionAccess.Write, directory);
-            var permissionSet = new PermissionSet(PermissionState.None);
-            permissionSet.AddPermission(permission);
-
-            return permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet);
-        }
-
-        private string GetConvertToDdsArgs(string path)
-        {
-            _tmpBuilder.Clear();
-
-            _tmpBuilder.Append(" -nologo");
-
-            if (CheckPow2.IsChecked.HasValue && CheckPow2.IsChecked.Value)
-                _tmpBuilder.Append(" -pow2");
-
-            _tmpBuilder.Append($" -ft dds -f {ComboDdsFormat.SelectedItem} -m {ComboMipmaps.SelectedItem}");
-
-            if (!string.IsNullOrEmpty(InputDestination.Text))
-                _tmpBuilder.Append($" -o {InputDestination.Text}");
-
-            _tmpBuilder.Append(path);
-
-            return _tmpBuilder.ToString();
-        }
-
-        private string GetConvertToPngArgs(string path)
-        {
-            return $" -nologo -ft png -o {InputDestination.Text} {path}";
-        }
-
-        private void StartProcessing()
-        {
-            _processing = true;
-
-            ListSelection.IsEnabled = false;
-            BtnClear.IsEnabled = false;
-            BtnSource.IsEnabled = false;
-            BtnSourceClear.IsEnabled = false;
-            BtnDestination.IsEnabled = false;
-            BtnConvert.IsEnabled = false;
-            ComboDdsFormat.IsEnabled = false;
-            ComboMipmaps.IsEnabled = false;
-            CheckPow2.IsEnabled = false;
-        }
-
-        private void FinishProcessing()
-        {
-            _processing = false;
-
-            ListSelection.IsEnabled = true;
-            BtnClear.IsEnabled = true;
-            BtnSource.IsEnabled = true;
-            BtnSourceClear.IsEnabled = true;
-            BtnDestination.IsEnabled = true;
-            BtnConvert.IsEnabled = true;
-            ComboDdsFormat.IsEnabled = true;
-            ComboMipmaps.IsEnabled = true;
-            CheckPow2.IsEnabled = true;
-        }
-
-        #endregion
-
         #region Bindings
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            InputDestination.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-            var dxgi_values = Enum.GetNames(typeof(DxgiFormat));
-            foreach (var value in dxgi_values)
-                ComboDdsFormat.Items.Add(value);
-
-            ComboDdsFormat.SelectedIndex = ComboDdsFormat.Items.Count - 1;
-
-            for (int i = 1; i <= 6; i++)
-                ComboMipmaps.Items.Add(i);
-
-            ComboMipmaps.SelectedIndex = 0;
+            SetInitialValues();
         }
 
         private void BtnSource_Click(object sender, RoutedEventArgs e)
@@ -133,7 +40,7 @@ namespace TexConvGUI
             var dialog = new OpenFileDialog
             {
                 Title = "Select Files",
-                Filter = "Image (*.png)|*.png|Texture (*.dds)|*.dds|All files (*.*)|*.*",
+                Filter = "Image Files (*.dds *.png *.jpg *.bmp *.tga *.tiff) |*.dds; *.png; *.jpg; *.bmp; *.tga; *.tiff|All Files(*.*) |*.*",
                 InitialDirectory = Directory.GetCurrentDirectory(),
                 Multiselect = true
             };
@@ -206,7 +113,7 @@ namespace TexConvGUI
                 MessageBox.Show("texconv.exe not found! Place texconv.exe into the same directory as this program.", "Error");
                 return;
             }
-            
+
             StartProcessing();
             var totalFiles = ListSelection.Items.Count;
             var convertedCount = 0;
@@ -227,7 +134,7 @@ namespace TexConvGUI
                         FileName = TEXCONV_PATH
                     }
                 };
-                
+
                 var ext = Path.GetExtension(item).ToLowerInvariant();
                 proc.StartInfo.Arguments = ext == ".dds" ? GetConvertToPngArgs(item) : GetConvertToDdsArgs(item);
 
@@ -243,6 +150,7 @@ namespace TexConvGUI
 
                 var sb = new StringBuilder();
                 sb.AppendLine($"Failed to convert {item}!");
+                sb.AppendLine($"Args: {proc.StartInfo.Arguments}");
                 sb.AppendLine();
                 sb.AppendLine(output);
 

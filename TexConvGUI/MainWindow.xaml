@@ -5,21 +5,74 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TexConvGUI"
         mc:Ignorable="d"
-        Title="Texconv DDS &lt;-&gt; PNG" Height="425.111" Width="665" Loaded="MainWindow_OnLoaded" Padding="5" ScrollViewer.CanContentScroll="True">
+        Title="Texconv GUI" Height="711.111" Width="665" Loaded="MainWindow_OnLoaded" Padding="5" ScrollViewer.CanContentScroll="True">
     <Grid Margin="5,5,5,5">
-        <Button x:Name="BtnSource" Content="Select File(s)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="153" Height="24" Click="BtnSource_Click" />
-        <Button x:Name="BtnDestination" Content="Destination Directory" HorizontalAlignment="Left" Margin="326,10,0,0" VerticalAlignment="Top" Width="153" Height="24" Click="BtnDestination_Click"/>
-        <TextBox x:Name="InputDestination" HorizontalAlignment="Left" Height="24" Margin="326,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="314" IsReadOnly="True" VerticalContentAlignment="Center" />
-        <ListBox x:Name="ListSelection" HorizontalAlignment="Left" Height="225" Margin="10,66,0,0" VerticalAlignment="Top" Width="630" KeyUp="ListSelection_OnKeyUp" AllowDrop="True" Drop="ListSelection_OnDrop" />
-        <Label Content="Selected Files:" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top" Height="22" Width="153" Padding="2,2,2,1" RenderTransformOrigin="0.51,-0.383"/>
-        <Button x:Name="BtnClear" Content="Clear Destination" HorizontalAlignment="Left" Margin="487,10,0,0" VerticalAlignment="Top" Width="153" Height="24" Click="BtnClear_Click" />
-        <Button x:Name="BtnConvert" Content="Convert" HorizontalAlignment="Left" Margin="10,348,0,0" VerticalAlignment="Top" Width="153" Height="24" Click="BtnConvert_Click" />
-        <ComboBox x:Name="ComboDdsFormat" HorizontalAlignment="Left" Margin="484,296,0,0" VerticalAlignment="Top" Width="153"  />
-        <Label Content="DDS Output Format" HorizontalAlignment="Left" Margin="326,296,0,0" VerticalAlignment="Top" Height="22" Width="153" Padding="2,2,2,1"/>
-        <ComboBox x:Name="ComboMipmaps" HorizontalAlignment="Left" Margin="484,323,0,0" VerticalAlignment="Top" Width="153"  />
-        <Label Content="Mipmap Levels" HorizontalAlignment="Left" Margin="326,323,0,0" VerticalAlignment="Top" Height="22" Width="153" Padding="2,2,2,1"/>
-        <CheckBox x:Name="CheckPow2" Content="pow2" HorizontalAlignment="Left" Margin="484,353,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.66,1.956" />
-        <Label Content="Non-DDS files will be converted to DDS.&#xD;&#xA;DDS files will be converted to PNG." HorizontalAlignment="Left" Margin="10,296,0,0" VerticalAlignment="Top" Height="49"/>
-        <Button x:Name="BtnSourceClear" Content="Clear File List" HorizontalAlignment="Left" Margin="168,10,0,0" VerticalAlignment="Top" Width="153" Height="24" Click="BtnSourceClear_Click" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="111"/>
+            <RowDefinition Height="332"/>
+            <RowDefinition Height="102"/>
+            <RowDefinition Height="73"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="BtnConvert" Content="Convert" Margin="10,10,10,0" Click="BtnConvert_Click" Grid.Row="4" Height="24" VerticalAlignment="Top" />
+        <Label Content="Non-DDS files will be converted to DDS format.&#xA;DDS files will be converted to the image output format." Margin="10" Grid.Row="3"/>
+        <GroupBox Header="DDS Output Options" Margin="10" Grid.Column="1" Grid.Row="2" Grid.RowSpan="2">
+            <Grid Margin="10" RenderTransformOrigin="0.373,0.523">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="112"/>
+                    <ColumnDefinition Width="Auto" MinWidth="171.5"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="ComboDdsFormat" Margin="10,10,19.5,0" VerticalAlignment="Top"  Grid.Column="1" Height="22"  />
+                <Label Content="Format" Margin="10,10,10,0" VerticalAlignment="Top" Height="22" Padding="2,2,2,1"/>
+                <ComboBox x:Name="ComboMipmaps" Margin="10,37,19.5,0" VerticalAlignment="Top" Grid.Column="1" Height="22"  />
+                <Label Content="Mipmap Levels" Margin="10,37,10,0" VerticalAlignment="Top" Height="22" Padding="2,2,2,1"/>
+                <ComboBox x:Name="ComboAlpha" Margin="10,64,19.5,0" VerticalAlignment="Top" Grid.Column="1" Height="22"  />
+                <Label Content="Alpha" Margin="10,64,10,0" VerticalAlignment="Top" Height="22" Padding="2,2,2,1"/>
+                <CheckBox x:Name="CheckPow2" Content="pow2" Margin="10,91,19.5,0" VerticalAlignment="Top" RenderTransformOrigin="0.66,1.956" Height="22" Grid.Column="1" VerticalContentAlignment="Center" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Image Output Options" Margin="10" Grid.Row="2">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="112*"/>
+                    <ColumnDefinition Width="171.5*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Format" Margin="10,10,10,0" Padding="2,2,2,1" Height="22" VerticalAlignment="Top"/>
+                <ComboBox x:Name="ComboImageFormat" Margin="10,10,10,0"  Grid.Column="1" Height="22" VerticalAlignment="Top"  />
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Destination Options" Margin="10" Grid.ColumnSpan="2">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="149*"/>
+                    <ColumnDefinition Width="150*"/>
+                    <ColumnDefinition Width="299*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="BtnDestination" Content="Select Directory" Margin="10,10,10,0" VerticalAlignment="Top" Height="24" Click="BtnDestination_Click"/>
+                <Button x:Name="BtnClear" Content="Clear Destination" Margin="10,10,10,0" VerticalAlignment="Top" Height="24" Click="BtnClear_Click" Grid.Column="1" />
+                <TextBox x:Name="InputDestination" Height="24" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" VerticalContentAlignment="Center" Grid.Column="2" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Source Files" Margin="10,10,10,11" Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="149*"/>
+                    <ColumnDefinition Width="150*"/>
+                    <ColumnDefinition Width="299*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="BtnSource" Content="Select File(s)" Margin="10" Click="BtnSource_Click" />
+                <Button x:Name="BtnSourceClear" Content="Clear File List" Margin="10" Click="BtnSourceClear_Click" Grid.Column="1" />
+                <ListBox x:Name="ListSelection" Margin="10" KeyUp="ListSelection_OnKeyUp" AllowDrop="True" Drop="ListSelection_OnDrop" Grid.ColumnSpan="3" Grid.Row="1" />
+            </Grid>
+        </GroupBox>
+        <CheckBox x:Name="CheckOverwrite" Content="Overwrite existing files?" Margin="10,10,10,0" VerticalAlignment="Top" RenderTransformOrigin="0.66,1.956" Height="22" Grid.Column="1" Grid.Row="4" VerticalContentAlignment="Center" />
     </Grid>
 </Window>

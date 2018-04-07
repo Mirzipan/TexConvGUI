@@ -14,4 +14,3 @@ D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.csproj.GenerateResource
 D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.csproj.CoreCompileInputs.cache
 D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.exe
 D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.pdb
-D:\Code\TexConvGUI\TexConvGUI\obj\x64\Release\TexConvGUI.csprojResolveAssemblyReference.cache
