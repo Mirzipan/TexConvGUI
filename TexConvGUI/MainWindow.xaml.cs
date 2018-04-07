@@ -24,6 +24,8 @@ namespace TexConvGUI
         private const string TEXCONV_PATH = "texconv.exe";
         private bool _processing = false;
 
+        private StringBuilder _tmpBuilder = new StringBuilder();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -54,7 +56,21 @@ namespace TexConvGUI
 
         private string GetConvertToDdsArgs(string path)
         {
-            return string.Format(" -nologo {0}-ft dds -f {1} -m {2} -o {3} {4}", CheckPow2.IsChecked.HasValue && CheckPow2.IsChecked.Value ? "-pow2 " : string.Empty, ComboDdsFormat.SelectedItem, ComboMipmaps.SelectedItem, InputDestination.Text, path);
+            _tmpBuilder.Clear();
+
+            _tmpBuilder.Append(" -nologo");
+
+            if (CheckPow2.IsChecked.HasValue && CheckPow2.IsChecked.Value)
+                _tmpBuilder.Append(" -pow2");
+
+            _tmpBuilder.Append($" -ft dds -f {ComboDdsFormat.SelectedItem} -m {ComboMipmaps.SelectedItem}");
+
+            if (!string.IsNullOrEmpty(InputDestination.Text))
+                _tmpBuilder.Append($" -o {InputDestination.Text}");
+
+            _tmpBuilder.Append(path);
+
+            return _tmpBuilder.ToString();
         }
 
         private string GetConvertToPngArgs(string path)
