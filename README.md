@@ -10,3 +10,6 @@ This tool needs texconv.exe in the same directory to run. You can either use the
 3. Click 'convert' button.
 4. If there are any issues converting some of the files, there will be an error message per each failed file.
 5. When everything has either failed, or been converted, a message will be displayed to let you know.
+
+## Executable
+If you don't feel like compiling this yourself, you can grab the .exe [here](https://github.com/Mirzipan/TexConvGUI/blob/master/TexConvGUI/bin/x64/Release/TexConvGUI.exe).
