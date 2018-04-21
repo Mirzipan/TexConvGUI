@@ -40,7 +40,8 @@ namespace TexConvGUI
 
             ComboAlpha.SelectedIndex = 0;
 
-            for (var i = 1; i <= 6; i++)
+            ComboMipmaps.Items.Add("Automatic");
+            for (var i = 1; i <= 10; i++)
                 ComboMipmaps.Items.Add(i);
 
             ComboMipmaps.SelectedIndex = 0;
@@ -132,7 +133,9 @@ namespace TexConvGUI
                 _tmpBuilder.Append(" -pow2");
 
             _tmpBuilder.Append(GetAlphaArgs((AlphaOptions) ComboAlpha.SelectedIndex));
-            _tmpBuilder.Append($" -ft dds -f {ComboDdsFormat.SelectedItem} -m {ComboMipmaps.SelectedItem}");
+
+            var mipmaps = ComboMipmaps.SelectedIndex == 0 ? "0" : ComboMipmaps.SelectedItem;
+            _tmpBuilder.Append($" -ft dds -f {ComboDdsFormat.SelectedItem} -m {mipmaps}");
 
             if (!string.IsNullOrEmpty(InputDestination.Text))
                 _tmpBuilder.Append($" -o {InputDestination.Text}");
